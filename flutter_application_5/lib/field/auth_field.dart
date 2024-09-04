@@ -19,6 +19,10 @@ final bool isPassword;
           borderSide: BorderSide(width: 2,color: Colors.black)),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(width: 2,color: Colors.black)),
+          errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 2,color: Colors.red)),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 2,color: Colors.red)),
       ),
               validator: (value) {
                 if(isPassword == false){if ((value?.length ?? 0) < 9) {
@@ -26,9 +30,6 @@ final bool isPassword;
                 }
                 if(!(value?.contains('@') ?? false)){
                   return 'Doesnt have simbol @';
-                }
-                if (!(value?.endsWith('.com') ?? false)) {
-                  return 'You didnt provid an address';
                 }
                 }
 
