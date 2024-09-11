@@ -2,6 +2,8 @@ class AppAssets {
   static const String titel = 'assets/images/Group.png';
   static const String info = 'assets/images/Component.png';
   static const String rectangle = 'assets/images/Rectangle.png';
+  static const String fotoInfo = 'assets/images/Register.png';
+
   static List<String> listImagesRow = [
     'assets/images/nel1.png',
     'assets/images/nel2.png',
@@ -9,10 +11,8 @@ class AppAssets {
     'assets/images/naruto0.png',
     'assets/images/nel5.png',
   ];
-}
 
-class AppAssetsList{
- static List<String> listImagesColumn = [
+  static List<String> listImagesColumn = [
   'assets/images/free-png.ru-63.png',
   'assets/images/images.png',
   'assets/images/nel4.png',
@@ -29,5 +29,4 @@ class AppAssetsList{
   'assets/images/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png',
   
   ];
-  
 }

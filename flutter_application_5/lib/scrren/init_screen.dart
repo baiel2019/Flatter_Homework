@@ -16,8 +16,9 @@ class InitScreen extends StatelessWidget {
             width: mq.width ,
             height: mq.height,
           ),
-           Image.asset(
-            scale: 0.1,
+           Image.asset(fit: BoxFit.fill,
+            height: mq.height * 0.86,
+            width: mq.width,
             AppAssets.rectangle),
              Positioned(
               top: 0,
@@ -31,7 +32,8 @@ class InitScreen extends StatelessWidget {
               child: Image.asset(AppAssets.info)),
         
             Positioned(
-            bottom: 20,
+            top: mq.height * 0.9,
+            bottom: 30,
              child: SizedBox(
               height: AppDimens.buttonHeight,
               width: mq.width,
@@ -45,7 +47,7 @@ class InitScreen extends StatelessWidget {
                               child: SizedBox(
                                 width: double.infinity,
                                 height: AppDimens.buttonHeight,
-                                child: CommonButton(text: 'LOG IN', isWhite: true)),
+                                child: CommonButton(text: 'LOG IN', isWhite: true, isButtonResgist: true,)),
                             ),
                             SizedBox(width: AppDimens.low,),
                             Expanded(
@@ -53,7 +55,7 @@ class InitScreen extends StatelessWidget {
                               child: SizedBox(
                                 width: double.infinity,
                                 height: AppDimens.buttonHeight,
-                                child: CommonButton(text: 'REGISTER', isWhite: false)),
+                                child: CommonButton(text: 'REGISTER', isWhite: false, isButtonResgist: true,)),
                             )
                             
                         ],

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_5/core/app_dimens/app_dimens.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});

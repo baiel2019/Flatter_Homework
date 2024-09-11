@@ -26,11 +26,11 @@ final _formKey = GlobalKey<FormState>();
   @override
 
 
-// void dispose(){
-//   controllerEmail.dispose();
-//   controllerPassword.dispose();
-//   super.dispose();
-// }
+void dispose(){
+  controllerEmail.dispose();
+  controllerPassword.dispose();
+  super.dispose();
+}
 
   Widget build(BuildContext context) {
     return  Scaffold(

@@ -2,73 +2,120 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5/core/app_assets.dart';
 import 'package:flutter_application_5/core/app_dimens/app_dimens.dart';
+import 'package:flutter_application_5/core/widget/user_repository.dart';
+import 'package:flutter_application_5/core/widget/scroll_container.dart';
+import 'package:flutter_application_5/scrren/story_screen.dart';
+import 'package:flutter_application_5/users.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key,});
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final _usersRepository = UserRepository();
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
     final mqSize = mq.width * 0.9;
 
-List<double> size = [mqSize *2/3 ,mqSize ,mqSize *2/3,mqSize, mqSize];
-
     return Scaffold(
-      body: CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-              child:Padding(
-                padding: const EdgeInsets.all(20),
-                child: SizedBox(
-                          height: mqSize,
-                          child:  ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => Container(
-                  color: Colors.red,
-                  width: mqSize,
-                  height: mqSize,
-
-                  child: Image.asset(fit: BoxFit.cover,AppAssets.listImagesRow[index]),
+      body: FutureBuilder<List<User>>(
+        future: _usersRepository.fetchUser(),
+         builder:(BuildContext context, AsyncSnapshot<List<User>> snapshot){
+      if(snapshot.connectionState == ConnectionState.waiting){
+return const Center(child: CircularProgressIndicator(),);
+      }else if(snapshot.hasError){
+        return Text('error: ${snapshot.error}');
+      } else{
+        return Padding(
+        padding: const EdgeInsets.all(20),
+        child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            toolbarHeight: 100,
+            title: 
+              Column(
+                children: [
+                  Image.asset(AppAssets.fotoInfo),
+                  const SizedBox(height: AppDimens.med,),
+                  const Text('What’s new today',style: TextStyle(fontWeight: FontWeight.w600),),
+                ],
+              )
+            
+          ),
+          SliverToBoxAdapter(
+                child:Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: SizedBox(
+                            height: mqSize,
+                            child:  ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder:(context)=>  StoryScreen(user: snapshot.data!, index: index,),));
+                      },
+                      child: Container(
+                      color: Colors.grey,
+                      width: mqSize,
+                      height: mqSize,
+                              
+                      child: Image(fit: BoxFit.cover,image: NetworkImage(snapshot.data![index].photoes.last),),
+                                        ),
+                    ),
+                   separatorBuilder: (context, index) => const SizedBox(width: AppDimens.med,), itemCount: 5)
+                  ),
                 ),
-                 separatorBuilder: (context, index) => const SizedBox(width: AppDimens.med,), itemCount: 5)
-                ),
-              ),
+          ),
+        
+        const SliverToBoxAdapter(
+          child: Text('Browse all',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 25),),
         ),
+        
+           SliverToBoxAdapter(
+                child:Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Row(children: [
+                    scrollContainer(isNumberImage: true, isReversed: true, image: snapshot.data, items: 5,),
+                    const SizedBox(width: AppDimens.low,),
+                    scrollContainer(isNumberImage: false, isReversed: false, image: snapshot.data, items: 5,),
+                  ],),
+                ) ),
 
-        SliverToBoxAdapter(
-              child:Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(children: [
-                  _scrollContainer(context, isReversed: true, isNumberImage: true,),
-                  SizedBox(width: AppDimens.low,),
-                  _scrollContainer(context, isReversed: false, isNumberImage: false,)
-                ],),
-              ) )
-      ],
-    )
-    );
-    }}
-
-    Column _scrollContainer(BuildContext context, {required bool isReversed, required bool isNumberImage}){
-    final  sizeContainer = MediaQuery.of(context).size;
-    List<Widget> scrollContainer = [];
-    List<double> sizes= [
-      sizeContainer.width * 2 / 3,
-      sizeContainer.width,
-      sizeContainer.width * 2 / 3,
-      sizeContainer.width,
-      sizeContainer.width];
-      for (var i = 0; i < 5; i++) {
-          scrollContainer.add( Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Container(
-                          color: Colors.grey[200],
-                          width: sizeContainer.width * 0.9 * 0.48,
-                          height: isReversed ? sizes[i] : sizes.reversed.toList()[i],
-                          child: Center(child: Image.asset(fit: BoxFit.fill, AppAssetsList.listImagesColumn[ isNumberImage ? i : i + 5]),),
-                                          ),
-          ));
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    width: mq.width,
+                    height: mq.height *0.1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      const Icon(Icons.home,size: 30,),
+                      const SizedBox(width: AppDimens.hid,),
+                      const Icon(Icons.search,size: 30,),
+                      const SizedBox(width: AppDimens.hid,),
+                      Container(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.red),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 7),
+                          child: Icon(Icons.add,size: 30,),
+                        )),
+                        const SizedBox(width: AppDimens.hid,),
+                      const Icon(Icons.sms,size: 30,),
+                      const SizedBox(width: AppDimens.hid,),
+                      const Icon(Icons.person,size: 30,),
+                    ],),
+                  ),
+                )
+        ],
+            ),
+      );
       }
-      return Column(children: scrollContainer);
-    }
+      }),
+    );
+  
+    
+    }}
+ 

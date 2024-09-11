@@ -12,6 +12,7 @@ final bool isPassword;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: isPassword,
       controller: controller,
       decoration: InputDecoration(
         hintText: text,

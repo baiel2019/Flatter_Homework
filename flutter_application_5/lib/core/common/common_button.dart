@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5/scrren/auth_sreen.dart';
+import 'package:flutter_application_5/scrren/seach_sreen.dart';
 
 class CommonButton extends StatelessWidget {
-  const CommonButton({super.key,required , required this.isWhite, required this.text });
+  const CommonButton({super.key,required , required this.isWhite, required this.text, required this.isButtonResgist });
 
 final String text;
 final bool isWhite;
+final bool isButtonResgist;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ final bool isWhite;
                       backgroundColor: isWhite ? Colors.white : Colors.black,      
                     ),
                     onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder:(context)=> AuthSreen(isRegistrationForm: isWhite ? false : true,) ,));
+                    Navigator.push(context, MaterialPageRoute(builder:(context)=> isButtonResgist ? AuthSreen(isRegistrationForm: isWhite ? false : true,) : SeachSreen() ,));
                   }, child: Text( text ,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: isWhite ? Colors.black : Colors.white),))));
   }
 }
